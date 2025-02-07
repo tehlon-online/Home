@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>GuessTheWord.txt</title>
+        <style>
+            body {
+                background-color: #f0f0f0; /* Light gray background */
+                font-family: 'Arial', sans-serif;
+                margin: 0;
+                padding: 0;
+            }
+            #game-container {
+                width: 500px;
+                height: 400px;
+                border: 2px solid #000;
+                background-color: #fff;
+                margin: 50px 0 0 0; /* Removed the left margin to align it to the left */
+                padding: 10px;
+                position: relative;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                font-family: "Courier New", Courier, monospace; /* Monospaced font for Notepad look */
+                overflow: hidden;
+            }
+            #title-bar {
+                background-color: #2e2e2e;
+                color: white;
+                padding: 5px 10px;
+                font-size: 14px;
+                font-weight: bold;
+                text-align: left;
+                border-radius: 3px 3px 0 0;
+                margin: -10px -10px 10px;
+            }
+            #word {
+                font-size: 30px;
+                padding: 10px;
+                margin: 10px 0;
+                text-align: left; /* Left align */
+            }
+            .wrong-guesses {
+                color: rgb(0, 0, 0);
+                padding: 5px;
+                margin: 10px 0;
+                text-align: left; /* Left align */
+            }
+            #celebration-gif { 
+                display: none; 
+                width: 300px; 
+            }
+            #footer-text {
+                position: absolute;
+                bottom: 10px;
+                right: 10px;
+                font-size: 10px;
+                font-style: italic;
+                color: gray;
+            }
+            input[type="text"] {
+                font-family: "Courier New", Courier, monospace;
+                padding: 5px;
+                font-size: 18px;
+                margin-top: 10px;
+                width: 50px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+            button {
+                font-family: "Courier New", Courier, monospace;
+                padding: 5px 10px;
+                font-size: 14px;
+                margin-left: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            button:hover {
+                background-color: #f0f0f0;
+            }
+            .game-content {
+                overflow-y: auto;
+                height: 250px;
+            }
+        </style>
+    </head>
+    <body>
+
+        <audio id="myAudio">
+            <source src="And His Name is JOHN CENA - Sound Effect (HD).mp3" type="audio/mpeg">
+        </audio>
+
+        <h1 style="margin-bottom: 0; text-align: left; padding-left: 0px;">Tehlon.com</h1>
+        <p style="font-size: 15px; margin-top: 0; text-align: left; padding-left: 0px;"><em>This website is a really dumb project for fun</em></p>
+
+        <div id="game-container">
+            <div id="title-bar">GuessTheWord.txt</div>
+            <div class="game-content">
+                <p>Guess the word:</p>
+                <div class="word" id="word"></div>
+                <div>Wrong guesses: <span id="wrong-guesses" class="wrong-guesses"></span></div>
+                <p>Enter a letter:</p>
+                <input type="text" id="letter" maxlength="1" />
+                <button onclick="guessLetter()">Guess</button>
+                <p id="message"></p>
+            </div>
+
+            <div id="footer-text">Added 2.6.25</div>
+        </div>
+
+        <img id="celebration-gif" src="john-cena-dance.gif" alt="John Cena Dancing">
+
+        <script>
+            const answer = "U CANT SEE ME";  
+            let guessedLetters = [];
+            let wrongLetters = [];
+
+            function displayWord() {
+                let display = "";
+                for (let letter of answer) {
+                    display += letter === " " ? " " : (guessedLetters.includes(letter) ? letter : "_");
+                }
+                document.getElementById("word").textContent = display;
+            }
+
+            function guessLetter() {
+                const letterInput = document.getElementById("letter").value.toUpperCase();
+                if (letterInput && !guessedLetters.includes(letterInput) && !wrongLetters.includes(letterInput)) {
+                    if (answer.includes(letterInput)) {
+                        guessedLetters.push(letterInput);
+                    } else {
+                        wrongLetters.push(letterInput);
+                    }
+                    document.getElementById("letter").value = "";
+                    document.getElementById("wrong-guesses").textContent = wrongLetters.join(", ");
+                    displayWord();
+                    checkGameStatus();
+                }
+            }
+
+            function checkGameStatus() {
+                if (!document.getElementById("word").textContent.includes("_")) {
+                    document.getElementById("message").textContent = "You win! The word was: " + answer;
+                    document.getElementById("myAudio").play();
+                    document.getElementById("celebration-gif").style.display = "block";
+                } else if (wrongLetters.length >= 6) {
+                    document.getElementById("message").textContent = "You lose! The word was: " + answer;
+                }
+            }
+
+            displayWord();
+        </script>
+    </body>    
+</html>
