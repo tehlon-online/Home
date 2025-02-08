@@ -62,7 +62,8 @@
         .game-content {
             height: auto;
         }
-        #celebration-gif {
+        /* Hide both GIFs by default */
+        #celebration-gif, #losing-gif {
             display: none;
             width: 300px;
             margin-top: 20px;
@@ -72,17 +73,24 @@
 </head>
 <body>
 
-    <audio id="myAudio">
+    <!-- Winning Audio -->
+    <audio id="winningAudio">
         <source src="And His Name is JOHN CENA - Sound Effect (HD).mp3" type="audio/mpeg">
+    </audio>
+    <!-- Losing Audio (replace with your desired file) -->
+    <audio id="losingAudio">
+        <source src="john-cena-sad-edit-forever-young-ft-john-cena-retirement-from-wwe-128-ytshorts.savetube.me.mp3" type="audio/mpeg">
     </audio>
 
     <h1 style="margin-bottom: 0; padding-left: 30px;">Tehlon.com</h1>
-    <p style="font-size: 15px; margin-top: 0; padding-left: 30px;"><em>This website is a really dumb project for fun</em></p>
+    <p style="font-size: 15px; margin-top: 0; padding-left: 30px;">
+        <em>This website is a really dumb project just for fun</em>
+    </p>
 
     <div id="game-container">
-        <div id="title-bar">GuessTheWord.txt</div>
+        <div id="title-bar">GuessThePhrase.txt</div>
         <div class="game-content">
-            <label for="letter">Guess the word:</label>
+            <label for="letter">Guess the phrase:</label>
             <p id="word"></p>
             <label>Wrong guesses: <span id="wrong-guesses" class="wrong-guesses"></span></label>
             <label for="letter">Enter a letter:</label>
@@ -91,8 +99,13 @@
             <p id="message"></p>
         </div>
         <div id="footer-text">Added 2.6.25</div>
+        <!-- Winning GIF Container -->
         <div id="celebration-gif-container">
-            <img id="celebration-gif" src="john-cena-dance.gif" alt="John Cena Dancing">
+            <img id="celebration-gif" src="FWUuy7.gif" alt="John Cena Dancing">
+        </div>
+        <!-- Losing GIF Container -->
+        <div id="losing-gif-container">
+            <img id="losing-gif" src="john-cena-sad.gif" alt="John Cena Losing">
         </div>
     </div>
 
@@ -112,12 +125,12 @@
 
             // Check if the input is empty or the letter has already been guessed
             if (!letterInput || guessedLetters.includes(letterInput) || wrongLetters.includes(letterInput)) {
-                // Clear the input field if the letter is a duplicate
+                // Clear the input field if the letter is a duplicate or empty
                 document.getElementById("letter").value = "";
-                return;  // Exit the function if the letter is invalid or already guessed
+                return;
             }
 
-            // If the letter is not a duplicate, push it to the correct list
+            // Add the letter to the appropriate array based on whether it is in the answer
             (answer.includes(letterInput) ? guessedLetters : wrongLetters).push(letterInput);
 
             // Clear the input field after processing the guess
@@ -148,14 +161,17 @@
         }
 
         function checkGameStatus() {
+            // Win condition: all letters guessed
             if (!document.getElementById("word").textContent.includes("_")) {
                 document.getElementById("message").textContent = `You win! The word was: ${answer}`;
-                document.getElementById("myAudio").play();
+                document.getElementById("winningAudio").play();
                 document.getElementById("celebration-gif").style.display = "block";
-            } else if (wrongLetters.length >= 6) {
+            } 
+            // Loss condition: 6 or more wrong guesses
+            else if (wrongLetters.length >= 6) {
                 document.getElementById("message").textContent = `You lose! The word was: ${answer}`;
-                document.getElementById("myAudio").play();
-                document.getElementById("celebration-gif").style.display = "block";
+                document.getElementById("losingAudio").play();
+                document.getElementById("losing-gif").style.display = "block";
             }
         }
 
