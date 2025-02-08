@@ -77,7 +77,7 @@
     <audio id="winningAudio">
         <source src="And His Name is JOHN CENA - Sound Effect (HD).mp3" type="audio/mpeg">
     </audio>
-    <!-- Losing Audio (replace with your desired file) -->
+    <!-- Losing Audio -->
     <audio id="losingAudio">
         <source src="john-cena-sad-edit-forever-young-ft-john-cena-retirement-from-wwe-128-ytshorts.savetube.me.mp3" type="audio/mpeg">
     </audio>
@@ -109,6 +109,11 @@
         </div>
     </div>
 
+    <!-- David Link -->
+    <p style="text-align: center; font-size: 14px; margin-top: 20px;">
+        <a href="https://tehlon-online.github.io/David/" target="_blank">David click here</a>
+    </p>
+
     <script>
         const answer = "U CANT SEE ME";
         let guessedLetters = [];
@@ -123,29 +128,16 @@
         function guessLetter() {
             const letterInput = document.getElementById("letter").value.toUpperCase();
 
-            // Check if the input is empty or the letter has already been guessed
             if (!letterInput || guessedLetters.includes(letterInput) || wrongLetters.includes(letterInput)) {
-                // Clear the input field if the letter is a duplicate or empty
                 document.getElementById("letter").value = "";
                 return;
             }
 
-            // Add the letter to the appropriate array based on whether it is in the answer
             (answer.includes(letterInput) ? guessedLetters : wrongLetters).push(letterInput);
-
-            // Clear the input field after processing the guess
             document.getElementById("letter").value = "";
-
-            // Update the wrong guesses display
             document.getElementById("wrong-guesses").textContent = wrongLetters.join(", ");
-            
-            // Update the word display
             displayWord();
-
-            // Adjust game container height
             adjustGameContainerHeight();
-
-            // Check game status (win/lose)
             checkGameStatus();
         }
 
@@ -161,14 +153,11 @@
         }
 
         function checkGameStatus() {
-            // Win condition: all letters guessed
             if (!document.getElementById("word").textContent.includes("_")) {
                 document.getElementById("message").textContent = `You win! The word was: ${answer}`;
                 document.getElementById("winningAudio").play();
                 document.getElementById("celebration-gif").style.display = "block";
-            } 
-            // Loss condition: 6 or more wrong guesses
-            else if (wrongLetters.length >= 6) {
+            } else if (wrongLetters.length >= 6) {
                 document.getElementById("message").textContent = `You lose! The word was: ${answer}`;
                 document.getElementById("losingAudio").play();
                 document.getElementById("losing-gif").style.display = "block";
